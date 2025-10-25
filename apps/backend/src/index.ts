@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import { convertToModelMessages, type UIMessage } from 'ai';
 
-import { ArgoCDClient } from '@/packages/argocd';
+import { ArgoCDClient } from '@/argocd';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import config from './config';
 import { createAgent } from './agent';

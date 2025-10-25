@@ -18,8 +18,7 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./apps/*/src"],
-      "@/packages/*": ["./packages/*/src"]
+      "@/*": ["./packages/*/src"],
     }
   }
 }

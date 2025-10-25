@@ -2,7 +2,8 @@
   "name": "backend",
   "version": "0.0.1",
   "scripts": {
-    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 bun run --hot src/index.ts"
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 bun run --hot src/index.ts",
+    "build": "bun build --compile --minify --sourcemap src/index.ts --outfile dist/server"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "catalog:",

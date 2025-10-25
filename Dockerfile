@@ -2,7 +2,7 @@ FROM oven/bun:1.3-debian AS builder
 
 WORKDIR /build
 
-COPY package.json bun.lock ./
+COPY package.json bun.lock tsconfig.json ./
 COPY packages/ ./packages
 COPY apps/ ./apps
 
@@ -14,7 +14,7 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY --from=builder /build/dist/server .
+COPY --from=builder /build/apps/backend/dist/server .
 
 EXPOSE 3000
 CMD ["./server"]

@@ -91,7 +91,7 @@ spec:
           image: quay.io/argoprojlabs/argocd-extension-installer:v0.0.8
           env:
             - name: EXTENSION_URL
-              value: https://github.com/alexandrevilain/argo-cd-assistant/releases/download/v0.0.1/extension.tar.gz
+              value: https://github.com/alexandrevilain/argo-cd-assistant/releases/download/v0.0.1/extension.tar
           volumeMounts:
             - name: extensions
               mountPath: /tmp/extensions/

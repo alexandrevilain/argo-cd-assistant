@@ -3,7 +3,7 @@ import { useChat } from '@ai-sdk/react';
 import { MessageList } from './MessageList';
 import { MessageInput } from './MessageInput';
 import { DefaultChatTransport, UIMessage } from 'ai';
-import { Application } from '@/packages/argocd';
+import { Application } from '@/argocd';
 import styled from 'styled-components';
 import { colors } from '../theme';
 

@@ -9,6 +9,7 @@
     "dev:ext": "bun run --cwd apps/extension dev",
     "dev:backend": "bun run --cwd apps/backend dev",
     "build:ext": "bun run --cwd apps/extension build",
+    "build:backend": "bun run --cwd apps/backend build",
     "test": "echo \"No tests for now\"",
     "lint": "bunx eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "bunx eslint . --ext .js,.jsx,.ts,.tsx --fix",

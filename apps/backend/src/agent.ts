@@ -2,7 +2,7 @@ import { Experimental_Agent as Agent, stepCountIs, dynamicTool, LanguageModel } 
 
 import { z } from 'zod';
 
-import { ArgoCDClient } from '@/packages/argocd';
+import { ArgoCDClient } from '@/argocd';
 
 export function createAgent(
   argoClient: ArgoCDClient,
