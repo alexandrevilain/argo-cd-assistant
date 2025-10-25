@@ -20,7 +20,7 @@
     "@ai-sdk/react": "catalog:",
     "ai": "catalog:",
     "argocd": "workspace:*",
-    "react": "^18.3.1",
+    "react": "^19.2.0",
     "react-dom": "^18.3.1",
     "react-markdown": "^10.1.0",
     "styled-components": "^6.1.19",
