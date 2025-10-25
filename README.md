@@ -49,7 +49,7 @@ extension.config: |
         idleConnectionTimeout: 60s
         maxIdleConnections: 30
         services:
-        - url: http://assistant.argo-cd:3000 # replace with your backend service URL
+        - url: http://assistant.argocd:3000 # replace with your backend service URL
 ```
 
 Finally, create an API token for the assistant account:
@@ -64,8 +64,10 @@ argocd account generate-token --account assistant
 git clone https://github.com/alexandrevilain/argo-cd-assistant.git
 cd argo-cd-assistant
 kubectl create secret generic assistant \
+  --from-literal=ARGOCD_API_TOKEN=assistant-api-token \ # replace with the token generated above
   --from-literal=OPENAI_API_KEY=your-api-key \
-  --from-literal=ARGOCD_API_TOKEN=assistant-api-token \
+  --from-literal=OPENAI_BASE_URL="https://openrouter.ai/api/v1" \ # optional, default is https://api.openai.com/v1.
+  --from-literal=MODEL="anthropic/claude-haiku-4.5" \ # optional, default is gpt-5-mini
   -n argocd
 kubectl apply -f deploy/manifests
 ```
@@ -87,11 +89,11 @@ spec:
   template:
     spec:
       initContainers:
-        - name: extension-metrics
+        - name: extension-assistant
           image: quay.io/argoprojlabs/argocd-extension-installer:v0.0.8
           env:
             - name: EXTENSION_URL
-              value: https://github.com/alexandrevilain/argo-cd-assistant/releases/download/v0.0.1/extension.tar
+              value: https://github.com/alexandrevilain/argo-cd-assistant/releases/download/v0.0.2/extension.tar
           volumeMounts:
             - name: extensions
               mountPath: /tmp/extensions/
