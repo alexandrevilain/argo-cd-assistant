@@ -1,0 +1,20 @@
+# Ignore common build outputs
+node_modules
+dist
+build
+coverage
+.next
+.turbo
+.cache
+.vite
+
+# Lockfiles and generated license
+bun.lock*
+THIRD_PARTY_LICENSES.md
+
+# Generated artifacts
+packages/argocd/swagger.json
+packages/argocd/src/types/argocd.d.ts
+
+# Vite outputs
+apps/extension/dist

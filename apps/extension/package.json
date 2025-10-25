@@ -1,0 +1,29 @@
+{
+  "name": "argo-cd-assistant",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "vite build && tar -C dist -cvf dist/extension.tar resources",
+    "dev": "vite build --watch --mode development"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^22.18.11",
+    "@types/react": "^18.3.12",
+    "@types/styled-components": "^5.1.34",
+    "@types/use-sync-external-store": "^1.5.0",
+    "sass": "^1.93.2",
+    "vite": "^7.1.10"
+  },
+  "dependencies": {
+    "@ai-sdk/react": "catalog:",
+    "ai": "catalog:",
+    "argocd": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^10.1.0",
+    "styled-components": "^6.1.19",
+    "use-sync-external-store": "^1.6.0"
+  }
+}

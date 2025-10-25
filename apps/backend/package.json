@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 bun run --hot src/index.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "catalog:",
+    "ai": "catalog:",
+    "argocd": "workspace:*",
+    "hono": "^4.10.1",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

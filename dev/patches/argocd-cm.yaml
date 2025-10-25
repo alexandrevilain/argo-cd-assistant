@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  accounts.assistant: apiKey
+  extension.config: |
+    extensions:
+      - name: assistant
+        backend:
+          connectionTimeout: 2s
+          keepAlive: 15s
+          idleConnectionTimeout: 60s
+          maxIdleConnections: 30
+          services:
+          - url: http://dockerhost.default:3000
