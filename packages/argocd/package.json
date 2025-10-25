@@ -1,0 +1,35 @@
+{
+  "name": "argocd",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "download-swagger": "curl -o swagger.json https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.1.8/assets/swagger.json",
+    "generate-types": "dtsgen -c dtsgen.json -o src/types/argocd.d.ts swagger.json"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client/index.js",
+      "types": "./dist/client/index.d.ts"
+    }
+  },
+  "devDependencies": {
+    "@dtsgenerator/replace-namespace": "^1.7.0",
+    "@types/bun": "latest",
+    "@types/js-cookie": "^3.0.6",
+    "dtsgenerator": "^3.19.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "js-cookie": "^3.0.5"
+  }
+}

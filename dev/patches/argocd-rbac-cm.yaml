@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+data:
+  policy.csv: |
+    p, admin, extensions, invoke, *, allow
+
+    p, role:assistant, applications, get, *, allow
+    p, role:assistant, applications, list, *, allow
+    p, role:assistant, applications, syncstatus, *, allow
+    p, role:assistant, applications, resource, *, allow
+    p, role:assistant, applications, logs, *, allow
+    p, role:assistant, applications, events, *, allow
+    p, role:assistant, repositories, get, *, allow
+    p, role:assistant, projects, get, *, allow
+    p, role:assistant, clusters, get, *, allow
+    p, role:assistant, accounts, get, assistant, allow
+
+    g, assistant, role:assistant
+
+  policy.default: role:readonly

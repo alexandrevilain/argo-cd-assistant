@@ -1,0 +1,38 @@
+{
+  "name": "argo-cd-assistant",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:ext": "bun run --cwd apps/extension dev",
+    "dev:backend": "bun run --cwd apps/backend dev",
+    "build:ext": "bun run --cwd apps/extension build",
+    "test": "echo \"No tests for now\"",
+    "lint": "bunx eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "bunx eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "bunx prettier --write .",
+    "format:check": "bunx prettier --check .",
+    "typecheck": "bunx tsc --noEmit",
+    "changeset": "bunx -y changeset",
+    "version-packages": "bunx -y changeset version",
+    "release": "bunx -y changeset publish"
+  },
+  "catalog": {
+    "@ai-sdk/openai-compatible": "^1.0.22",
+    "@ai-sdk/react": "^2.0.76",
+    "ai": "^5.0.76"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.1"
+  }
+}
