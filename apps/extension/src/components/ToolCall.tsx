@@ -87,7 +87,7 @@ export const ToolCallDisplay: React.FC<ToolCallDisplayProps> = ({ part, isFirstP
   const [isInputExpanded, setIsInputExpanded] = useState(false);
   const [isOutputExpanded, setIsOutputExpanded] = useState(false);
 
-  const hasInput = (part.input || null) && Object.keys((part.input || {})).length > 0;
+  const hasInput = (part.input || null) && Object.keys(part.input || {}).length > 0;
   const hasOutput = part.state === 'output-available';
   const hasError = part.state === 'output-error';
 
