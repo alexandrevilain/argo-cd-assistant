@@ -1,24 +1,24 @@
 version: 2
 updates:
-  - package-ecosystem: npm
+  - package-ecosystem: bun
     directory: '/'
     schedule:
       interval: daily
       timezone: 'Europe/Berlin'
 
-  - package-ecosystem: npm
+  - package-ecosystem: bun
     directory: '/apps/backend'
     schedule:
       interval: daily
       timezone: 'Europe/Berlin'
 
-  - package-ecosystem: npm
+  - package-ecosystem: bun
     directory: '/apps/extension'
     schedule:
       interval: daily
       timezone: 'Europe/Berlin'
 
-  - package-ecosystem: npm
+  - package-ecosystem: bun
     directory: '/packages/argocd'
     schedule:
       interval: daily
