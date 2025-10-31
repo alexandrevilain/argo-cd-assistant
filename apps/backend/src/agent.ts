@@ -8,10 +8,9 @@ export function createAgent(
   argoClient: ArgoCDClient,
   applicationName: string,
   model: LanguageModel,
+  customPrompt?: string | null,
 ) {
-  return new Agent({
-    model,
-    system: `You are an SRE agent and Argo CD/Kubernetes expert embedded inside the Argo CD UI.
+  let systemPrompt = `You are an SRE agent and Argo CD/Kubernetes expert embedded inside the Argo CD UI.
 
 Operating principles:
 - Prefer calling tools to inspect real cluster/application state before answering. Never invent values.
@@ -33,7 +32,18 @@ Tool selection guidance:
 Response style:
 - Start with a short summary, then numbered steps/actions.
 - Quote resource identifiers verbatim (Kind/name.namespace).
-- When you reference logs/events you did not retrieve, say so and suggest how to fetch them.`,
+- When you reference logs/events you did not retrieve, say so and suggest how to fetch them.`;
+
+  if (customPrompt && customPrompt.trim()) {
+    systemPrompt += `
+
+Here is some extra context the ArgoCD administrator gave to you:
+${customPrompt.trim()}`;
+  }
+
+  return new Agent({
+    model,
+    system: systemPrompt,
     stopWhen: stepCountIs(10),
     tools: {
       getApplication: dynamicTool({
@@ -60,7 +70,7 @@ Response style:
       }),
       getApplicationManagedResources: dynamicTool({
         description:
-          'List managed resources for the current application, including drift info. Use to analyze OutOfSync/drift and enumerate kinds/names/namespaces.',
+          'List managed resources for the current application, including drift info. Use to analyze OutOfSync/drift and enumerate managed kinds/names/namespaces.',
         inputSchema: z.object(),
         execute: async () => {
           return argoClient.getApplicationManagedResources(applicationName);

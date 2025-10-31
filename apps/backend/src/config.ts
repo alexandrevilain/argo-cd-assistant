@@ -8,6 +8,7 @@ const ConfigSchema = z.object({
   OPENAI_BASE_URL: z.string().default('https://api.openai.com/v1'),
 
   ARGOCD_API_TOKEN: z.string().min(1, 'ARGOCD_API_TOKEN is required'),
+  CUSTOM_PROMPT_FILE: z.string().optional(),
 });
 
 const config = ConfigSchema.parse(process.env);
