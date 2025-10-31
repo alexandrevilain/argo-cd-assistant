@@ -6,6 +6,7 @@ import { ArgoCDClient } from '@/argocd';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import config from './config';
 import { createAgent } from './agent';
+import { readTextFile } from './fs';
 
 const app = new Hono();
 app.use(logger());
@@ -15,6 +16,11 @@ const openai = createOpenAICompatible({
   baseURL: config.OPENAI_BASE_URL,
   apiKey: config.OPENAI_API_KEY,
 });
+
+let customPrompt: string | null = null;
+if (config.CUSTOM_PROMPT_FILE) {
+  customPrompt = await readTextFile(config.CUSTOM_PROMPT_FILE);
+}
 
 app.get('/', (c) => {
   return c.text('');
@@ -28,7 +34,7 @@ app.post('/api/agent', async (c) => {
 
   const argoClient = new ArgoCDClient(argocdEndpoint, config.ARGOCD_API_TOKEN);
 
-  return createAgent(argoClient, applicationName, openai(config.MODEL))
+  return createAgent(argoClient, applicationName, openai(config.MODEL), customPrompt)
     .stream({
       messages: convertToModelMessages(messages),
     })

@@ -8,7 +8,7 @@
     "dev": "vite build --watch --mode development"
   },
   "devDependencies": {
-    "@types/bun": "1.3.1",
+    "@types/bun": "catalog:",
     "@types/node": "^22.18.11",
     "@types/react": "^18.3.12",
     "@types/styled-components": "^5.1.35",
