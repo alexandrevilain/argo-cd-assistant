@@ -17,6 +17,14 @@ updates:
     schedule:
       interval: daily
       timezone: 'Europe/Berlin'
+    ignore:
+      # Ignore React and React-DOM updates to maintain compatibility with ArgoCD UI.
+      # ArgoCD v3.1.8 uses React 16.9.3, while the extension uses React 18.3.1.
+      # Updating React could cause integration issues with ArgoCD's UI components.
+      - dependency-name: react
+      - dependency-name: react-dom
+      - dependency-name: '@types/react'
+      - dependency-name: '@types/react-dom'
 
   - package-ecosystem: bun
     directory: '/packages/argocd'
