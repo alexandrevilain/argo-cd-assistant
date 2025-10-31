@@ -13,7 +13,7 @@
     "@types/react": "^18.3.12",
     "@types/styled-components": "^5.1.35",
     "@types/use-sync-external-store": "^1.5.0",
-    "sass": "^1.93.2",
+    "sass": "^1.93.3",
     "vite": "^7.1.12"
   },
   "dependencies": {
