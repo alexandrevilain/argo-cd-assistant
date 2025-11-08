@@ -83,7 +83,7 @@ interface ToolCallDisplayProps {
   isFirstPart: boolean;
 }
 
-export const ToolCallDisplay: React.FC<ToolCallDisplayProps> = ({ part, isFirstPart }) => {
+export const ToolCallPart: React.FC<ToolCallDisplayProps> = ({ part, isFirstPart }) => {
   const [isInputExpanded, setIsInputExpanded] = useState(false);
   const [isOutputExpanded, setIsOutputExpanded] = useState(false);
 

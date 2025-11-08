@@ -3,7 +3,8 @@ import type { UIMessage } from 'ai';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
 import { colors, getCodeBackgroundColor } from '../theme';
-import { ToolCallDisplay } from './ToolCall';
+import { ToolCallPart } from './ToolCallPart';
+import { ReasoningPart } from './ReasoningPart';
 
 const Container = styled.div`
   flex: 1;
@@ -160,6 +161,8 @@ export const MessageList: React.FC<MessageListProps> = ({
                                 fontSize: '13px',
                                 fontFamily: 'Monaco, Menlo, Consolas, monospace',
                                 color: isUser ? colors.textWhite : colors.textPrimary,
+                                background: 'none',
+                                padding: 0,
                               }}
                               {...props}
                             >
@@ -217,8 +220,10 @@ export const MessageList: React.FC<MessageListProps> = ({
                     </ReactMarkdown>
                   </MessageContent>
                 );
+              case 'reasoning':
+                return <ReasoningPart key={index} text={part.text} state={part.state} />;
               case 'dynamic-tool':
-                return <ToolCallDisplay key={index} part={part} isFirstPart={index === 0} />;
+                return <ToolCallPart key={index} part={part} isFirstPart={index === 0} />;
             }
           })}
         </div>
