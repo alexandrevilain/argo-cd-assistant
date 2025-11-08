@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "types": ["vite/client", "node"],
+    "types": ["vite/client", "bun"],
     "lib": ["DOM", "DOM.Iterable", "ES6"]
   },
   "include": ["src/**/*"],

@@ -9,7 +9,6 @@
   },
   "devDependencies": {
     "@types/bun": "catalog:",
-    "@types/node": "^22.18.11",
     "@types/react": "^18.3.12",
     "@types/styled-components": "^5.1.35",
     "@types/use-sync-external-store": "^1.5.0",
