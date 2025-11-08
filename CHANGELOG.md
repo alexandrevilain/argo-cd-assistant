@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.0](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.0.2...v0.1.0) (2025-11-08)
+
+
+### Features
+
+* **backend:** add support for custom system prompts via file configuration ([#17](https://github.com/alexandrevilain/argo-cd-assistant/issues/17)) ([216d8db](https://github.com/alexandrevilain/argo-cd-assistant/commit/216d8dbfa227b5ea4b7c81c2768d5a7bad147eaa))
+* **ui:** add Reasoning support ([#32](https://github.com/alexandrevilain/argo-cd-assistant/issues/32)) ([5e09471](https://github.com/alexandrevilain/argo-cd-assistant/commit/5e09471dabd81e9d6ed94f66dd0fe3101d0e6a40))
+
 ## [0.0.2](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.0.1...v0.0.2) (2025-10-25)
 
 
