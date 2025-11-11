@@ -16,6 +16,3 @@ export const colors = {
   errorBorder: '#dc2626',
   argoGray6: '#6D7F8B',
 };
-
-export const getCodeBackgroundColor = (isUser: boolean) =>
-  isUser ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.08)';
