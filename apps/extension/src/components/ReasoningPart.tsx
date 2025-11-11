@@ -42,7 +42,7 @@ const ReasoningIcon = styled.span<{ isExpanded: boolean }>`
 
 const ReasoningContent = styled.div<{ isExpanded: boolean }>`
   max-height: ${(props) => (props.isExpanded ? '500px' : '0')};
-  overflow: hidden;
+  overflow-y: ${(props) => (props.isExpanded ? 'scroll' : 'hidden')};
   transition: max-height 0.3s ease-in-out;
   padding: ${(props) => (props.isExpanded ? '12px' : '0 12px')};
   background-color: rgba(24, 190, 148, 0.02);
