@@ -2,9 +2,19 @@ import React from 'react';
 import type { UIMessage } from 'ai';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
-import { colors, getCodeBackgroundColor } from '../theme';
+import { colors } from '../theme';
 import { ToolCallPart } from './ToolCallPart';
 import { ReasoningPart } from './ReasoningPart';
+import remarkGfm from 'remark-gfm';
+import { Light, SyntaxHighlighterProps } from 'react-syntax-highlighter';
+import yaml from 'react-syntax-highlighter/dist/esm/languages/hljs/yaml';
+import bash from 'react-syntax-highlighter/dist/esm/languages/hljs/bash';
+import vs from 'react-syntax-highlighter/dist/esm/styles/hljs/vs';
+
+Light.registerLanguage('yaml', yaml);
+Light.registerLanguage('bash', bash);
+
+const SyntaxHighlighter = Light as any as React.FC<SyntaxHighlighterProps>;
 
 const Container = styled.div`
   flex: 1;
@@ -49,20 +59,6 @@ const MessageContent = styled.div<{ isUser: boolean }>`
   color: ${(props) => (props.isUser ? colors.textWhite : colors.textPrimary)};
 `;
 
-const CodeBlock = styled.pre<{ isUser: boolean }>`
-  background-color: ${(props) => getCodeBackgroundColor(props.isUser)};
-  padding: 12px;
-  border-radius: 6px;
-  overflow: auto;
-  margin: 8px 0;
-
-  code {
-    font-size: 13px;
-    font-family: Monaco, Menlo, Consolas, monospace;
-    color: ${(props) => (props.isUser ? colors.textWhite : colors.textPrimary)};
-  }
-`;
-
 const LoadingContainer = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -102,6 +98,10 @@ const LoadingDot = styled.div<{ delay: number }>`
   }
 `;
 
+const Code = styled.code`
+  all: unset;
+`;
+
 interface MessageListProps {
   messages: UIMessage[];
   isLoading?: boolean;
@@ -134,57 +134,8 @@ export const MessageList: React.FC<MessageListProps> = ({
                 return (
                   <MessageContent key={index} isUser={isUser}>
                     <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
                       components={{
-                        code: ({ className, children, ...props }: any) => {
-                          // Check if it's a code block (has language class) or inline code
-                          const match = /language-(\w+)/.exec(className || '');
-                          const isCodeBlock = !!match || className?.includes('language-');
-
-                          return !isCodeBlock ? (
-                            <code
-                              style={{
-                                backgroundColor: getCodeBackgroundColor(isUser),
-                                padding: '2px 6px',
-                                borderRadius: '4px',
-                                fontSize: '13px',
-                                fontFamily: 'Monaco, Menlo, Consolas, monospace',
-                                color: isUser ? colors.textWhite : colors.textPrimary,
-                              }}
-                              {...props}
-                            >
-                              {children}
-                            </code>
-                          ) : (
-                            <code
-                              className={className}
-                              style={{
-                                fontSize: '13px',
-                                fontFamily: 'Monaco, Menlo, Consolas, monospace',
-                                color: isUser ? colors.textWhite : colors.textPrimary,
-                                background: 'none',
-                                padding: 0,
-                              }}
-                              {...props}
-                            >
-                              {children}
-                            </code>
-                          );
-                        },
-                        pre: ({ children, ...props }: any) => (
-                          <CodeBlock isUser={isUser} {...props}>
-                            {children}
-                          </CodeBlock>
-                        ),
-                        p: ({ ...props }) => (
-                          <p style={{ margin: '8px 0', lineHeight: '1.6' }} {...props} />
-                        ),
-                        ul: ({ ...props }) => (
-                          <ul style={{ margin: '8px 0', paddingLeft: '20px' }} {...props} />
-                        ),
-                        ol: ({ ...props }) => (
-                          <ol style={{ margin: '8px 0', paddingLeft: '20px' }} {...props} />
-                        ),
-                        li: ({ ...props }) => <li style={{ margin: '4px 0' }} {...props} />,
                         h1: ({ ...props }) => (
                           <h1
                             style={{ fontSize: '20px', fontWeight: '600', margin: '12px 0 8px' }}
@@ -203,17 +154,75 @@ export const MessageList: React.FC<MessageListProps> = ({
                             {...props}
                           />
                         ),
-                        blockquote: ({ ...props }) => (
-                          <blockquote
+                        h4: ({ ...props }) => (
+                          <h4
+                            style={{ fontSize: '14px', fontWeight: '600', margin: '10px 0 6px' }}
+                            {...props}
+                          />
+                        ),
+                        h5: ({ ...props }) => (
+                          <h5
+                            style={{ fontSize: '13px', fontWeight: '600', margin: '8px 0 4px' }}
+                            {...props}
+                          />
+                        ),
+                        h6: ({ ...props }) => (
+                          <h6
+                            style={{ fontSize: '12px', fontWeight: '600', margin: '8px 0 4px' }}
+                            {...props}
+                          />
+                        ),
+                        table: ({ ...props }) => (
+                          <table
                             style={{
-                              borderLeft: `3px solid ${isUser ? 'rgba(255, 255, 255, 0.5)' : colors.primary}`,
-                              paddingLeft: '12px',
-                              margin: '8px 0',
-                              fontStyle: 'italic',
+                              borderCollapse: 'collapse',
+                              width: '100%',
+                              border: '1px solid #ccc',
                             }}
                             {...props}
                           />
                         ),
+                        th: ({ ...props }) => (
+                          <th
+                            style={{
+                              border: '1px solid #ccc',
+                              background: '#f9f9f9',
+                              padding: '8px',
+                            }}
+                            {...props}
+                          />
+                        ),
+                        td: ({ ...props }) => (
+                          <td style={{ border: '1px solid #ccc', padding: '8px' }} {...props} />
+                        ),
+                        code: ({ ...props }) => {
+                          const { children, className, ...rest } = props;
+                          const match = /language-(\w+)/.exec(className || '');
+
+                          return match ? (
+                            <SyntaxHighlighter
+                              CodeTag={Code}
+                              children={String(children).replace(/\n$/, '')}
+                              language={match[1]}
+                              style={vs}
+                            />
+                          ) : (
+                            <code
+                              {...rest}
+                              className={className}
+                              style={{
+                                backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                                padding: '2px 6px',
+                                borderRadius: '4px',
+                                fontSize: '13px',
+                                fontFamily: 'Monaco, Menlo, Consolas, monospace',
+                                color: isUser ? colors.textWhite : colors.textPrimary,
+                              }}
+                            >
+                              {children}
+                            </code>
+                          );
+                        },
                       }}
                     >
                       {part.text}
