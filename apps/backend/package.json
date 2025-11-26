@@ -9,7 +9,7 @@
     "@ai-sdk/openai-compatible": "catalog:",
     "ai": "catalog:",
     "argocd": "workspace:*",
-    "hono": "^4.10.6",
+    "hono": "^4.10.7",
     "zod": "^4.1.12"
   },
   "devDependencies": {
