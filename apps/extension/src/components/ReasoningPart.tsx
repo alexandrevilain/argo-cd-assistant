@@ -68,7 +68,7 @@ interface ReasoningPartProps {
   state?: 'streaming' | 'done';
 }
 
-export const ReasoningPart: React.FC<ReasoningPartProps> = ({ text, state }) => {
+export const ReasoningPart: React.FC<ReasoningPartProps> = React.memo(({ text, state }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -83,4 +83,4 @@ export const ReasoningPart: React.FC<ReasoningPartProps> = ({ text, state }) => 
       <ReasoningContent isExpanded={isExpanded}>{text}</ReasoningContent>
     </ReasoningContainer>
   );
-};
+});
