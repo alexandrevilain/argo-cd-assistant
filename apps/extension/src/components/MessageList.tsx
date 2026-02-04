@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import type { UIMessage } from 'ai';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
@@ -113,7 +113,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   isLoading,
   messagesEndRef,
 }) => {
-  const renderMessage = (message: UIMessage, index: number) => {
+  const renderMessage = useCallback((message: UIMessage, index: number) => {
     const isUser = message.role === 'user';
 
     return (
@@ -121,9 +121,10 @@ export const MessageList: React.FC<MessageListProps> = ({
         <MessageBubble isUser={isUser}>{renderMessageContent(message, isUser)}</MessageBubble>
       </MessageWrapper>
     );
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const renderMessageContent = (message: UIMessage, isUser: boolean) => {
+  const renderMessageContent = useCallback((message: UIMessage, isUser: boolean) => {
     // Handle different message structures
     if (message.parts && Array.isArray(message.parts)) {
       return (
@@ -241,7 +242,7 @@ export const MessageList: React.FC<MessageListProps> = ({
 
     // Fallback for other content types
     return <div>{JSON.stringify(message)}</div>;
-  };
+  }, []);
 
   return (
     <Container>

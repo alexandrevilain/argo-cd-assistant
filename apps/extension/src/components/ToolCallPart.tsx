@@ -83,7 +83,7 @@ interface ToolCallDisplayProps {
   isFirstPart: boolean;
 }
 
-export const ToolCallPart: React.FC<ToolCallDisplayProps> = ({ part, isFirstPart }) => {
+export const ToolCallPart: React.FC<ToolCallDisplayProps> = React.memo(({ part, isFirstPart }) => {
   const [isInputExpanded, setIsInputExpanded] = useState(false);
   const [isOutputExpanded, setIsOutputExpanded] = useState(false);
 
@@ -130,4 +130,4 @@ export const ToolCallPart: React.FC<ToolCallDisplayProps> = ({ part, isFirstPart
       {hasError && <Error>❌ Error: {part.errorText}</Error>}
     </Container>
   );
-};
+});
