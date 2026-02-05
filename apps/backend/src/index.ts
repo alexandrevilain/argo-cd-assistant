@@ -36,7 +36,7 @@ app.post('/api/agent', async (c) => {
 
   return createAgent(argoClient, applicationName, openai(config.MODEL), customPrompt)
     .stream({
-      messages: convertToModelMessages(messages),
+      messages: await convertToModelMessages(messages),
     })
     .toUIMessageStreamResponse();
 });
@@ -44,4 +44,5 @@ app.post('/api/agent', async (c) => {
 export default {
   port: config.PORT,
   fetch: app.fetch,
+  idleTimeout: 30,
 };
