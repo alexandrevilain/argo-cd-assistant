@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.2.0...v0.2.1) (2026-02-07)
+
+
+### Performance Improvements
+
+* **components:** prevent unnecessary re-renders ([#96](https://github.com/alexandrevilain/argo-cd-assistant/issues/96)) ([2bf1125](https://github.com/alexandrevilain/argo-cd-assistant/commit/2bf1125c296999cf48d2d1e074b96d8a2168d964))
+
 ## [0.2.0](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.1.0...v0.2.0) (2025-11-11)
 
 
