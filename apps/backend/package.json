@@ -10,7 +10,7 @@
     "ai": "catalog:",
     "argocd": "workspace:*",
     "hono": "^4.11.8",
-    "zod": "^4.3.6"
+    "zod": "^4.4.1"
   },
   "devDependencies": {
     "@types/bun": "catalog:"
