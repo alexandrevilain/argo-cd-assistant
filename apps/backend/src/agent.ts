@@ -1,4 +1,4 @@
-import { Experimental_Agent as Agent, stepCountIs, dynamicTool, LanguageModel } from 'ai';
+import { ToolLoopAgent, isStepCount, dynamicTool, LanguageModel } from 'ai';
 
 import { z } from 'zod';
 
@@ -45,10 +45,10 @@ Here is some extra context the ArgoCD administrator gave to you:
 ${customPrompt.trim()}`;
   }
 
-  return new Agent({
+  return new ToolLoopAgent({
     model,
-    system: systemPrompt,
-    stopWhen: stepCountIs(10),
+    instructions: systemPrompt,
+    stopWhen: isStepCount(10),
     tools: {
       getApplication: dynamicTool({
         description:

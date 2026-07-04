@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { logger } from 'hono/logger';
-import { convertToModelMessages, type UIMessage } from 'ai';
+import { createAgentUIStreamResponse, type UIMessage } from 'ai';
 
 import { ArgoCDClient } from '@/argocd';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
@@ -34,11 +34,10 @@ app.post('/api/agent', async (c) => {
 
   const argoClient = new ArgoCDClient(argocdEndpoint, config.ARGOCD_API_TOKEN);
 
-  return createAgent(argoClient, applicationName, openai(config.MODEL), customPrompt)
-    .stream({
-      messages: await convertToModelMessages(messages),
-    })
-    .toUIMessageStreamResponse();
+  return createAgentUIStreamResponse({
+    agent: createAgent(argoClient, applicationName, openai(config.MODEL), customPrompt),
+    uiMessages: messages,
+  });
 });
 
 export default {
