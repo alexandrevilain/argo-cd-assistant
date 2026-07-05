@@ -3,11 +3,13 @@ import { ToolLoopAgent, isStepCount, dynamicTool, LanguageModel } from 'ai';
 import { z } from 'zod';
 
 import { ArgoCDClient } from '@/argocd';
+import { Logger } from './logger';
 
 export function createAgent(
   argoClient: ArgoCDClient,
   applicationName: string,
   model: LanguageModel,
+  logger: Logger,
   customPrompt?: string | null,
 ) {
   let systemPrompt = `You are an SRE agent and Argo CD/Kubernetes expert embedded inside the Argo CD UI.
@@ -49,6 +51,42 @@ ${customPrompt.trim()}`;
     model,
     instructions: systemPrompt,
     stopWhen: isStepCount(10),
+    onStart: ({ provider, modelId }) => {
+      logger.info({ provider, modelId, application: applicationName }, 'agent run started');
+    },
+    onToolExecutionStart: ({ toolCall }) => {
+      logger.debug(
+        { tool: toolCall.toolName, toolCallId: toolCall.toolCallId, input: toolCall.input },
+        'tool execution started',
+      );
+    },
+    onToolExecutionEnd: ({ toolCall, toolExecutionMs, toolOutput }) => {
+      const fields = {
+        tool: toolCall.toolName,
+        toolCallId: toolCall.toolCallId,
+        toolExecutionMs: Math.round(toolExecutionMs),
+      };
+
+      if (toolOutput.type === 'tool-error') {
+        logger.error({ ...fields, err: toolOutput.error }, 'tool execution failed');
+      } else {
+        logger.debug(fields, 'tool execution completed');
+      }
+    },
+    onStepEnd: ({ finishReason, usage }) => {
+      logger.debug({ finishReason, usage }, 'agent step completed');
+    },
+    onEnd: ({ finishReason, usage, steps, toolCalls }) => {
+      logger.info(
+        {
+          finishReason,
+          usage,
+          steps: steps.length,
+          toolCalls: toolCalls.length,
+        },
+        'agent run completed',
+      );
+    },
     tools: {
       getApplication: dynamicTool({
         description:
