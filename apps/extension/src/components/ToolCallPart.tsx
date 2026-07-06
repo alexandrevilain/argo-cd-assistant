@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { colors } from '../theme';
-import type { DynamicToolUIPart } from 'ai';
+import type { ToolUIPart } from 'ai';
 
 const Container = styled.div<{ isFirstPart: boolean }>`
   margin-top: ${(props) => (props.isFirstPart ? '0' : '12px')};
@@ -79,13 +79,15 @@ const Error = styled.div`
 `;
 
 interface ToolCallDisplayProps {
-  part: DynamicToolUIPart;
+  part: ToolUIPart;
   isFirstPart: boolean;
 }
 
 export const ToolCallPart: React.FC<ToolCallDisplayProps> = React.memo(({ part, isFirstPart }) => {
   const [isInputExpanded, setIsInputExpanded] = useState(false);
   const [isOutputExpanded, setIsOutputExpanded] = useState(false);
+
+  const toolName = part.type.replace(/^tool-/, '');
 
   const hasInput = (part.input || null) && Object.keys(part.input || {}).length > 0;
   const hasOutput = part.state === 'output-available';
@@ -95,7 +97,7 @@ export const ToolCallPart: React.FC<ToolCallDisplayProps> = React.memo(({ part, 
     <Container isFirstPart={isFirstPart}>
       <Header hasContent={hasInput || hasOutput || hasError}>
         <span>🔧</span>
-        <span>{part.toolName}</span>
+        <span>{toolName}</span>
       </Header>
 
       {part.state === 'input-streaming' && <Status>Processing...</Status>}

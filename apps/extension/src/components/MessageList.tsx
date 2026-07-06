@@ -130,6 +130,10 @@ export const MessageList: React.FC<MessageListProps> = ({
       return (
         <div>
           {message.parts.map((part: any, index: number) => {
+            if (typeof part.type === 'string' && part.type.startsWith('tool-')) {
+              return <ToolCallPart key={index} part={part} isFirstPart={index === 0} />;
+            }
+
             switch (part.type) {
               case 'text':
                 return (
@@ -232,8 +236,6 @@ export const MessageList: React.FC<MessageListProps> = ({
                 );
               case 'reasoning':
                 return <ReasoningPart key={index} text={part.text} state={part.state} />;
-              case 'dynamic-tool':
-                return <ToolCallPart key={index} part={part} isFirstPart={index === 0} />;
             }
           })}
         </div>
