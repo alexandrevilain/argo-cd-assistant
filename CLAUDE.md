@@ -35,6 +35,7 @@ Full local setup (Kind cluster, Argo CD install, assistant token, `.env`) is doc
 4. `createAgent` (`apps/backend/src/agent.ts`) builds a `ToolLoopAgent` (max 10 steps) whose system prompt hard-scopes analysis to the single application. Tools (`getApplication`, `getApplicationResourceTree`, `getApplicationManagedResources`, `getPodLogs`, `getWorkloadLogs`, `getApplicationLogs`, `getApplicationEvents`, `getResourceEvents`) are thin wrappers over `ArgoCDClient` methods.
 
 Key architectural points:
+
 - The backend does **not** hold an Argo CD endpoint in config — it trusts the `Origin` header of the incoming proxied request as the target Argo CD server. Auth to Argo CD is a single service-account API token (`ARGOCD_API_TOKEN`).
 - Everything is scoped to one application per request; the agent cannot reach other applications.
 - Chat history is persisted client-side in `localStorage` keyed by `chat-history:<namespace>:<name>`.
