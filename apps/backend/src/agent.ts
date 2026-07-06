@@ -1,4 +1,4 @@
-import { ToolLoopAgent, isStepCount, dynamicTool, LanguageModel } from 'ai';
+import { ToolLoopAgent, isStepCount, tool, LanguageModel } from 'ai';
 
 import { z } from 'zod';
 
@@ -88,10 +88,10 @@ ${customPrompt.trim()}`;
       );
     },
     tools: {
-      getApplication: dynamicTool({
+      getApplication: tool({
         description:
           'Fetch the Argo CD Application object for the current app. Use for status/sync/health, source (repo/path/revision), and destination (cluster/namespace). Returns V1alpha1Application.',
-        inputSchema: z.object(),
+        inputSchema: z.object({}),
         execute: async () => {
           const application = await argoClient.getApplication(applicationName);
           if (application.metadata && application.metadata.managedFields) {
@@ -102,41 +102,40 @@ ${customPrompt.trim()}`;
           return application;
         },
       }),
-      getApplicationResourceTree: dynamicTool({
+      getApplicationResourceTree: tool({
         description:
           'Fetch the resource tree (DAG) for the current application. Use to locate workloads/pods and ownership, and to see per-resource health/sync. Returns V1alpha1ApplicationTree.',
-        inputSchema: z.object(),
+        inputSchema: z.object({}),
         execute: async () => {
           return argoClient.getApplicationResourceTree(applicationName);
         },
       }),
-      getApplicationManagedResources: dynamicTool({
+      getApplicationManagedResources: tool({
         description:
           'List managed resources for the current application, including drift info. Use to analyze OutOfSync/drift and enumerate managed kinds/names/namespaces.',
-        inputSchema: z.object(),
+        inputSchema: z.object({}),
         execute: async () => {
           return argoClient.getApplicationManagedResources(applicationName);
         },
       }),
-      getPodLogs: dynamicTool({
+      getPodLogs: tool({
         description: 'Fetch logs for a pod. Use to debug workloads.',
         inputSchema: z.object({
           podName: z.string().describe('The name of the pod'),
         }),
-        execute: async (input) => {
-          const { podName } = input as { podName: string };
+        execute: async ({ podName }) => {
           return argoClient.getPodLogs(applicationName, podName);
         },
       }),
-      getApplicationLogs: dynamicTool({
+      getApplicationLogs: tool({
         description:
           'Fetch application-level logs from Argo CD. Use to debug application sync/reconciliation issues.',
-        inputSchema: z.object(),
+        inputSchema: z.object({}),
         execute: async () => {
           return argoClient.getApplicationLogs(applicationName);
         },
       }),
-      getWorkloadLogs: dynamicTool({
+      getWorkloadLogs: tool({
         description:
           'Fetch logs for a specific workload resource (Deployment, StatefulSet, etc.). Use when you need logs from a specific resource identified in the resource tree.',
         inputSchema: z.object({
@@ -147,15 +146,7 @@ ${customPrompt.trim()}`;
           kind: z.string().describe('The kind of the resource'),
           version: z.string().describe('The API version of the resource'),
         }),
-        execute: async (input) => {
-          const { applicationNamespace, namespace, name, group, kind, version } = input as {
-            applicationNamespace: string;
-            namespace: string;
-            name: string;
-            group: string;
-            kind: string;
-            version: string;
-          };
+        execute: async ({ applicationNamespace, namespace, name, group, kind, version }) => {
           return argoClient.getWorkloadLogs(applicationName, applicationNamespace, {
             namespace,
             name,
@@ -165,15 +156,15 @@ ${customPrompt.trim()}`;
           });
         },
       }),
-      getApplicationEvents: dynamicTool({
+      getApplicationEvents: tool({
         description:
           'Fetch Kubernetes events for the current application. Use to investigate warnings, errors, or state changes.',
-        inputSchema: z.object(),
+        inputSchema: z.object({}),
         execute: async () => {
           return argoClient.getApplicationEvents(applicationName);
         },
       }),
-      getResourceEvents: dynamicTool({
+      getResourceEvents: tool({
         description:
           'Fetch Kubernetes events for a specific resource. Use to debug issues with individual resources.',
         inputSchema: z.object({
@@ -182,13 +173,7 @@ ${customPrompt.trim()}`;
           resourceNamespace: z.string().describe('The namespace of the resource'),
           resourceName: z.string().describe('The name of the resource'),
         }),
-        execute: async (input) => {
-          const { applicationNamespace, resourceUID, resourceNamespace, resourceName } = input as {
-            applicationNamespace: string;
-            resourceUID: string;
-            resourceNamespace: string;
-            resourceName: string;
-          };
+        execute: async ({ applicationNamespace, resourceUID, resourceNamespace, resourceName }) => {
           return argoClient.getResourceEvents(
             applicationName,
             applicationNamespace,
