@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.3.0](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.2.0...v0.3.0) (2026-08-01)
+
+
+### Features
+
+* **backend:** add structured logging and agent observability ([#160](https://github.com/alexandrevilain/argo-cd-assistant/issues/160)) ([33100ea](https://github.com/alexandrevilain/argo-cd-assistant/commit/33100eacd36f34675880d6342276a66383c27da3))
+
+
+### Performance Improvements
+
+* **components:** prevent unnecessary re-renders ([#96](https://github.com/alexandrevilain/argo-cd-assistant/issues/96)) ([2bf1125](https://github.com/alexandrevilain/argo-cd-assistant/commit/2bf1125c296999cf48d2d1e074b96d8a2168d964))
+
+
+### Documentation
+
+* add CLAUDE.md for Claude Code guidance ([#168](https://github.com/alexandrevilain/argo-cd-assistant/issues/168)) ([a831e20](https://github.com/alexandrevilain/argo-cd-assistant/commit/a831e20efe8d228325d41a5980b3a026cdfeea72))
+
+
+### Code Refactoring
+
+* use static tool() instead of dynamicTool() ([#167](https://github.com/alexandrevilain/argo-cd-assistant/issues/167)) ([5b3cf86](https://github.com/alexandrevilain/argo-cd-assistant/commit/5b3cf8694c8355b6b202527282cfe784c0ca1937))
+
+
+### Continuous Integration
+
+* configure release-please tags and PR titles ([#185](https://github.com/alexandrevilain/argo-cd-assistant/issues/185)) ([55cb7b2](https://github.com/alexandrevilain/argo-cd-assistant/commit/55cb7b2e74d204c3a299f8d698c2c6d9e759b7b9))
+* show all changelog sections except chore in release-please ([#169](https://github.com/alexandrevilain/argo-cd-assistant/issues/169)) ([1ab1a87](https://github.com/alexandrevilain/argo-cd-assistant/commit/1ab1a8796ab8cc42c81e1482824841d18060ff95))
+
 ## [0.2.0](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.1.0...v0.2.0) (2025-11-11)
 
 
