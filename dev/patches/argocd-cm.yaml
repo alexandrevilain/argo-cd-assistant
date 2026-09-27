@@ -13,4 +13,4 @@ data:
           idleConnectionTimeout: 60s
           maxIdleConnections: 30
           services:
-          - url: http://dockerhost.default:3000
+          - url: http://assistant-backend.argocd:3000

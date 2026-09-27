@@ -1,0 +1,9 @@
+# Mounts the repository into the Kind node so the backend runs in-cluster with hot reload.
+# Run `kind create cluster --config dev/kind.yaml` from the repository root.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: .
+        containerPath: /workspace

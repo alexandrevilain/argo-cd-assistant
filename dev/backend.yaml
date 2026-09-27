@@ -1,0 +1,45 @@
+# Runs the backend from the repository mounted by dev/kind.yaml.
+# Bun loads apps/backend/.env automatically from the working directory.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: assistant-backend
+spec:
+  selector:
+    matchLabels:
+      app: assistant-backend
+  template:
+    metadata:
+      labels:
+        app: assistant-backend
+    spec:
+      containers:
+        - name: backend
+          image: oven/bun:1
+          workingDir: /workspace/apps/backend
+          command: ['bun', 'run', '--hot', 'src/index.ts']
+          env:
+            - name: LOG_FORMAT
+              value: pretty
+            - name: ARGOCD_SERVER_URL
+              value: http://argocd-server.argocd
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
+              readOnly: true
+      volumes:
+        - name: workspace
+          hostPath:
+            path: /workspace
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: assistant-backend
+spec:
+  selector:
+    app: assistant-backend
+  ports:
+    - port: 3000
