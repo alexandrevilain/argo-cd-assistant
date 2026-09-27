@@ -68,9 +68,15 @@ kubectl create secret generic assistant \
   --from-literal=OPENAI_API_KEY=your-api-key \
   --from-literal=OPENAI_BASE_URL="https://openrouter.ai/api/v1" \ # optional, default is https://api.openai.com/v1.
   --from-literal=MODEL="anthropic/claude-haiku-4.5" \ # optional, default is gpt-5-mini
+  --from-literal=ARGOCD_SERVER_URL="http://argocd-server.argocd" \ # optional, see below
   -n argocd
 kubectl apply -f deploy/manifests
 ```
+
+By default, the backend calls the Argo CD API at the URL the user's browser used to reach the UI (the `Origin` header of the proxied request). Set `ARGOCD_SERVER_URL` to call the Argo CD API server directly instead, for example through its in-cluster service to bypass your ingress:
+
+- If Argo CD runs with `server.insecure: "true"` (TLS terminated at the ingress), use `http://argocd-server.argocd`. Traffic between the backend and Argo CD, including the API token, is then unencrypted inside the cluster.
+- Otherwise, use `https://argocd-server.argocd` and make the backend trust the certificate authority that signed the Argo CD server certificate: mount it in the backend pod and point `NODE_EXTRA_CA_CERTS` to it. The self-signed certificate Argo CD generates by default can't be trusted this way, as it isn't allowed to sign certificates.
 
 Note: A Helm chart will be available soon.
 

@@ -41,7 +41,7 @@ app.post('/api/agent', async (c) => {
 
   const { messages }: { messages: UIMessage[] } = await c.req.json();
 
-  const argocdEndpoint = c.req.header('Origin') || '';
+  const argocdEndpoint = config.ARGOCD_SERVER_URL || c.req.header('Origin') || '';
   const [_, applicationName] = (c.req.header('Argocd-Application-Name') || '').split(':');
 
   const argoClient = new ArgoCDClient(argocdEndpoint, config.ARGOCD_API_TOKEN);

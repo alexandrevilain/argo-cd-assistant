@@ -36,14 +36,14 @@ Full local setup (Kind cluster, Argo CD install, assistant token, `.env`) is doc
 
 Key architectural points:
 
-- The backend does **not** hold an Argo CD endpoint in config — it trusts the `Origin` header of the incoming proxied request as the target Argo CD server. Auth to Argo CD is a single service-account API token (`ARGOCD_API_TOKEN`).
+- By default the backend trusts the `Origin` header of the incoming proxied request as the target Argo CD server, unless `ARGOCD_SERVER_URL` is set. Auth to Argo CD is a single service-account API token (`ARGOCD_API_TOKEN`).
 - Everything is scoped to one application per request; the agent cannot reach other applications.
 - Chat history is persisted client-side in `localStorage` keyed by `chat-history:<namespace>:<name>`.
 - The LLM provider is OpenAI-compatible (`@ai-sdk/openai-compatible`); point `OPENAI_BASE_URL`/`MODEL` at any compatible provider (e.g. OpenRouter).
 
 ## Configuration (backend)
 
-Config is parsed and validated with Zod in `apps/backend/src/config.ts`. Required: `OPENAI_API_KEY`, `ARGOCD_API_TOKEN`. Optional: `PORT` (3000), `MODEL` (`gpt-5-mini`), `OPENAI_BASE_URL`, `LOG_LEVEL`, `LOG_FORMAT` (`json`/`pretty`), `CUSTOM_PROMPT_FILE` (a file whose contents are appended to the system prompt for admin-provided context).
+Config is parsed and validated with Zod in `apps/backend/src/config.ts`. Required: `OPENAI_API_KEY`, `ARGOCD_API_TOKEN`. Optional: `PORT` (3000), `ARGOCD_SERVER_URL` (overrides the `Origin` header as Argo CD API base URL, e.g. `http://argocd-server.argocd` with `server.insecure` to bypass the ingress), `MODEL` (`gpt-5-mini`), `OPENAI_BASE_URL`, `LOG_LEVEL`, `LOG_FORMAT` (`json`/`pretty`), `CUSTOM_PROMPT_FILE` (a file whose contents are appended to the system prompt for admin-provided context).
 
 ## Conventions
 
