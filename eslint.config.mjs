@@ -18,6 +18,7 @@ export default [
       '**/coverage/**',
       '**/.vite/**',
       '**/.cache/**',
+      '.claude/**',
       '**/node_modules/**',
       'bun.lock*',
       '**/*.d.ts',

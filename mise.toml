@@ -1,0 +1,4 @@
+[tools]
+argocd = "latest"
+bun = "latest"
+kind = "latest"

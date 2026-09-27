@@ -13,6 +13,8 @@ Before you begin, make sure these tools are installed:
 - [Argo CD CLI](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
 - OpenAI API key (or a compatible LLM provider key)
 
+If you use [mise](https://mise.jdx.dev), run `mise install` from the repository root to install Bun, Kind and the Argo CD CLI at the versions pinned in [`mise.toml`](mise.toml) and [`mise.lock`](mise.lock).
+
 ## Local Development Setup
 
 ### 1. Clone and install dependencies
