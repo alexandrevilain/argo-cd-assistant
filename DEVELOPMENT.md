@@ -7,11 +7,13 @@ This guide describes how to set up a local development environment for the Argo 
 Before you begin, make sure these tools are installed:
 
 - [Bun](https://bun.sh)
-- [Docker](https://www.docker.com/)
+- A Docker-compatible container runtime (Docker Desktop, Colima, …)
 - [Kind](https://kind.sigs.k8s.io/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Argo CD CLI](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
 - OpenAI API key (or a compatible LLM provider key)
+
+If you use [mise](https://mise.jdx.dev), run `mise install` from the repository root to install Bun, Kind and the Argo CD CLI at the versions pinned in [`mise.toml`](mise.toml) and [`mise.lock`](mise.lock).
 
 ## Local Development Setup
 
@@ -25,11 +27,13 @@ bun install
 
 ### 2. Create a Kind cluster
 
-Create a local Kubernetes cluster with Kind:
+Create a local Kubernetes cluster with Kind, from the repository root:
 
 ```bash
-kind create cluster
+kind create cluster --config dev/kind.yaml
 ```
+
+The config mounts the repository into the Kind node (`/workspace`) so the backend runs in the cluster straight from your sources. With Colima, the repository must be under a directory Colima shares with its VM (your home directory by default).
 
 ### 3. Install Argo CD with extension support
 
@@ -40,15 +44,17 @@ Apply the development kustomization which installs Argo CD and enables extension
 kubectl create namespace argocd
 
 # Apply the kustomization
-kubectl apply -k dev/
+kubectl apply -k dev/ --server-side --force-conflicts
 ```
+
+Server-side apply is required: some Argo CD CRDs are too large for a client-side `kubectl apply` (`metadata.annotations: Too long`).
 
 This sets up Argo CD with:
 
-- Extension proxy enabled ([`dev/patches/argocd-cmd-params-cm.yaml`](dev/patches/argocd-cmd-params-cm.yaml))
+- Extension proxy and plain HTTP (`server.insecure`) enabled ([`dev/patches/argocd-cmd-params-cm.yaml`](dev/patches/argocd-cmd-params-cm.yaml))
 - Assistant extension configured ([`dev/patches/argocd-cm.yaml`](dev/patches/argocd-cm.yaml))
 - RBAC permissions for the assistant account ([`dev/patches/argocd-rbac-cm.yaml`](dev/patches/argocd-rbac-cm.yaml))
-- ExternalName service for local backend access ([`dev/service.yaml`](dev/service.yaml))
+- The backend running in-cluster with hot reload ([`dev/backend.yaml`](dev/backend.yaml))
 
 ### 4. Access the Argo CD UI
 
@@ -60,9 +66,9 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
   -o jsonpath="{.data.password}" | base64 -d && echo
 
 # Port-forward to access the Argo CD UI
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl port-forward svc/argocd-server -n argocd 8080:80
 
-# Access Argo CD at https://localhost:8080
+# Access Argo CD at http://localhost:8080
 # Username: admin
 # Password: (from the command above)
 ```
@@ -73,7 +79,7 @@ Use the Argo CD CLI to generate an API token for the assistant account:
 
 ```bash
 # Log in to Argo CD (use the admin password from step 4)
-argocd login localhost:8080 --username admin --insecure
+argocd login localhost:8080 --username admin --plaintext
 
 # The assistant account is already created via the ConfigMap
 # Generate a token for the assistant account
@@ -95,28 +101,24 @@ OPENAI_API_KEY=your-openai-api-key-here
 
 # Argo CD configuration
 ARGOCD_API_TOKEN=your-assistant-token-from-step-5
-
-# Server configuration
-PORT=3000
-NODE_TLS_REJECT_UNAUTHORIZED=0
 EOF
 ```
 
-Note: `NODE_TLS_REJECT_UNAUTHORIZED=0` is only for local development with self-signed certificates. Do not use this in production.
+The in-cluster backend loads this file on startup, so restart it once the file is created:
+
+```bash
+kubectl -n argocd rollout restart deployment assistant-backend
+```
 
 ### 7. Start development servers
 
-Open two terminal windows:
-
-Terminal 1 — Backend server:
+The backend already runs in the cluster with hot reload (`bun run --hot`): edits to `apps/backend` or `packages/argocd` are picked up automatically. Follow its logs with:
 
 ```bash
-bun run dev:backend
+kubectl -n argocd logs -f deployment/assistant-backend
 ```
 
-This starts the backend server with hot reload on port 3000.
-
-Terminal 2 — Extension UI:
+Extension UI:
 
 ```bash
 bun run dev:ext
@@ -180,19 +182,18 @@ bun run gen:licenses
 
 ### Backend connection issues
 
-1. Verify the backend is running and reachable:
+1. Verify the backend pod is running and check its logs:
 
    ```bash
-   curl http://localhost:3000/
+   kubectl -n argocd get pods -l app=assistant-backend
+   kubectl -n argocd logs deployment/assistant-backend
    ```
 
-2. Check the ExternalName service:
+2. If the pod can't find its sources, check the repository is mounted in the Kind node (the cluster must be created with `dev/kind.yaml` from the repository root):
 
    ```bash
-   kubectl get svc dockerhost -n argocd
+   docker exec kind-control-plane ls /workspace
    ```
-
-3. Ensure `host.docker.internal` resolves correctly in Kind.
 
 ### RBAC permission errors
 
