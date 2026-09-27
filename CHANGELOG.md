@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.3.0...v0.4.0) (2026-09-27)
+
+
+### Features
+
+* **backend:** add ARGOCD_SERVER_URL to override the Argo CD API URL  ([#217](https://github.com/alexandrevilain/argo-cd-assistant/issues/217)) ([cde2f96](https://github.com/alexandrevilain/argo-cd-assistant/commit/cde2f963d34b27e5ccd751b0d5b77d193920b64e))
+
 ## [0.3.0](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.2.0...v0.3.0) (2026-08-01)
 
 
