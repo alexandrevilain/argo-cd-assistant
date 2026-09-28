@@ -22,8 +22,7 @@ Run from the repo root; scripts delegate into the right workspace.
 - `bun run lint` / `bun run lint:fix` — ESLint over `.js,.jsx,.ts,.tsx`.
 - `bun run format` / `bun run format:check` — Prettier.
 - `bun run typecheck` — `tsc --noEmit`.
-
-There is currently **no test suite** — `bun test` (the root `test` script) just prints "No tests for now".
+- `bun run test` — runs `bun test` (Bun's built-in runner, `*.test.ts` files).
 
 Full local setup (Kind cluster, Argo CD install, assistant token, `.env`) is documented in `DEVELOPMENT.md`.
 
