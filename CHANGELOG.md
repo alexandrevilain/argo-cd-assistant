@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.4.0...v0.4.1) (2026-09-28)
+
+
+### Bug Fixes
+
+* **argocd:** stop leaking the API token in error logs ([#227](https://github.com/alexandrevilain/argo-cd-assistant/issues/227)) ([0685f93](https://github.com/alexandrevilain/argo-cd-assistant/commit/0685f93d982f000e82aeaebb5a1b5057c44101ba))
+
 ## [0.4.0](https://github.com/alexandrevilain/argo-cd-assistant/compare/v0.3.0...v0.4.0) (2026-09-27)
 
 
