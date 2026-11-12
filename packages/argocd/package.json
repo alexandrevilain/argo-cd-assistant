@@ -23,7 +23,7 @@
     "@dtsgenerator/replace-namespace": "^1.7.0",
     "@types/bun": "catalog:",
     "@types/js-cookie": "^3.0.6",
-    "dtsgenerator": "^3.19.2"
+    "dtsgenerator": "^4.0.1"
   },
   "peerDependencies": {
     "typescript": "^6.0.3"
