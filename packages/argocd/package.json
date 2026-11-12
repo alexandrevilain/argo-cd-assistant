@@ -20,7 +20,7 @@
     }
   },
   "devDependencies": {
-    "@dtsgenerator/replace-namespace": "^1.7.0",
+    "@dtsgenerator/replace-namespace": "^2.0.0",
     "@types/bun": "catalog:",
     "@types/js-cookie": "^3.0.6",
     "dtsgenerator": "^3.19.2"
