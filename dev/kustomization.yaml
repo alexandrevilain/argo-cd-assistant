@@ -5,7 +5,7 @@ namespace: argocd
 
 # Base ArgoCD installation
 resources:
-  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.4.9/manifests/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.5.7/manifests/install.yaml
   - backend.yaml
 
 patchesStrategicMerge:

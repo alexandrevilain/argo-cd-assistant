@@ -9,10 +9,9 @@
   },
   "devDependencies": {
     "@types/bun": "catalog:",
-    "@types/react": "^18.3.12",
+    "@types/react": "^19.3.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/styled-components": "^5.1.36",
-    "@types/use-sync-external-store": "^1.5.0",
     "sass": "^1.101.0",
     "vite": "^7.3.1"
   },
@@ -20,12 +19,11 @@
     "@ai-sdk/react": "catalog:",
     "ai": "catalog:",
     "argocd": "workspace:*",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^16.1.1",
     "remark-gfm": "^4.0.1",
-    "styled-components": "^6.3.8",
-    "use-sync-external-store": "^1.6.0"
+    "styled-components": "^6.3.8"
   }
 }

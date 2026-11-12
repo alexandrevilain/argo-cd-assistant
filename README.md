@@ -4,6 +4,9 @@ An AI-powered assistant for Argo CD that analyzes, explains, and helps you debug
 
 ![Demo of ArgoCD assistant helping debug an application stuck in Progressing](assets/demo/demo.gif)
 
+> [!WARNING]
+> Starting with the first release after **v0.4.1**, this extension requires **Argo CD 3.5 or newer**: the Argo CD UI was upgraded from React 16 to React 19 in 3.5, and this extension now builds against React 19. For **Argo CD < 3.5**, use release **v0.4.1 or earlier**.
+
 ## Features
 
 - 🤖 AI-powered chat interface integrated into the Argo CD UI

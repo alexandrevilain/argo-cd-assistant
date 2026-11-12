@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import { ChatContainer } from './components/ChatContainer';
-import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
 const AssistantComponent: FC = (props: any) => {
   const { application } = props;
@@ -23,12 +22,6 @@ const Button: FC = () => {
 };
 
 ((window: any) => {
-  if (window.React && !window.React.useSyncExternalStore) {
-    Object.defineProperty(window.React, 'useSyncExternalStore', {
-      value: useSyncExternalStore,
-      writable: false,
-    });
-  }
   window?.extensionsAPI?.registerTopBarActionMenuExt(
     Button,
     'Assistant',
