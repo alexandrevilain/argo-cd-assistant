@@ -105,7 +105,7 @@ const Code = styled.code`
 interface MessageListProps {
   messages: UIMessage[];
   isLoading?: boolean;
-  messagesEndRef?: React.RefObject<HTMLDivElement>;
+  messagesEndRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export const MessageList: React.FC<MessageListProps> = ({
